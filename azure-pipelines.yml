@@ -29,6 +29,7 @@ stages:
 
 
       - task: Docker@2
+        displayName: 'Build Image'
         inputs:
           containerRegistry: 'acr-assgnapp-sc'
           repository: 'assignmentappACR'
