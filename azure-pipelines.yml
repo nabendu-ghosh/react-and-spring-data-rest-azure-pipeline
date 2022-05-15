@@ -11,10 +11,17 @@ pool:
 
 steps:
 - script: chmod +x mvnw && ./mvnw clean verify
-  displayName: 'Build'
+
 
 - task: CopyFiles@2
   inputs:
     SourceFolder: 'target'
     Contents: '*'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'acr-sc'
+    repository: 'testacr4586'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
