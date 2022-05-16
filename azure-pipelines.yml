@@ -36,3 +36,8 @@ stages:
           command: 'buildAndPush'
           Dockerfile: '**/Dockerfile'
   
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: 'infra'
+          Contents: '*.json'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)'
