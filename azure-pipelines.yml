@@ -10,6 +10,22 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
+- stage: Copy_Infra_Files
+  displayName: Copy Infra Files
+  jobs:
+    - job: Copy_Files_and_Publish
+      steps:
+        - task: CopyFiles@2
+          inputs:
+            SourceFolder: 'infra'
+            Contents: '*.json'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'infra'
+            publishLocation: 'Container'
+
 - stage: Build_Application
   displayName: Build Application
   jobs:
@@ -19,15 +35,12 @@ stages:
       
       - script: chmod +x mvnw && ./mvnw clean verify
         displayName: 'Build Application'
-        
 
       - task: CopyFiles@2
         inputs:
           SourceFolder: 'target'
           Contents: '*'
           TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-
       - task: Docker@2
         displayName: 'Build Image'
         inputs:
@@ -35,15 +48,3 @@ stages:
           repository: 'assignmentappACR'
           command: 'buildAndPush'
           Dockerfile: '**/Dockerfile'
-  
-      - task: CopyFiles@2
-        inputs:
-          SourceFolder: 'infra'
-          Contents: '*.json'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-      - task: PublishBuildArtifacts@1
-        inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'infra'
-          publishLocation: 'Container'
