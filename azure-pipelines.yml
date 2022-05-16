@@ -48,4 +48,4 @@ stages:
           repository: 'assignmentappACR'
           command: 'buildAndPush'
           Dockerfile: '**/Dockerfile'
-          tags: 'latest'
+          tags: '$(Build.BuildId)'
