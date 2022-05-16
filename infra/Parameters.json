@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        
+        "appplanname": {
+            "value": "appplan1" 
+        },
+
+        "webappname": {
+            "value": "assignmentapp5656" 
+         },
+
+        "registryPW":{
+            "value": "Mup6ZhOAXV2boNjHMndA4ipnUJ74G=7O"
+        }
+
+    }
+}

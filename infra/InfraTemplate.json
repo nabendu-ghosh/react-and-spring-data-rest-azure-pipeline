@@ -1,0 +1,130 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+
+        "appplanname": {
+            "type": "string"
+        },
+
+        "appplanSKU": {
+            "type": "string",
+            "allowedValues": [
+                "F1",
+                "B1"
+            ],
+            "defaultValue": "F1"
+        },
+
+        "webappname": {
+            "type": "string"
+        },
+
+        "registryURL": {
+            "type": "string",
+            "defaultValue": "https://assignmentappacr.azurecr.io"
+        },
+
+        "registryUser": {
+            "type": "string",
+            "defaultValue": "assignmentappACR"
+        },
+
+        "registryPW": {
+            "type": "securestring"
+        },
+
+        "linuxFxversion": {
+            "type": "string",
+            "defaultValue": "DOCKER|assignmentappacr.azurecr.io/assignmentappacr:8"
+        }
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+
+
+    {
+        "name": "[parameters('appplanname')]",
+        "type": "Microsoft.Web/serverfarms",
+        "apiVersion": "2020-12-01",
+        "kind": "linux",
+        "location": "[resourceGroup().location]",
+        "sku": {
+            "name": "[parameters('appplanSKU')]",
+            "capacity": 1
+        },
+
+        "properties": {
+            "name": "[parameters('appplanname')]",
+            "reserved": true
+        }
+    },
+
+    {
+        "name": "[parameters('webappname')]",
+        "type": "Microsoft.Web/sites",
+        "apiVersion": "2020-12-01",
+        "location": "[resourceGroup().location]",
+        "dependsOn": [
+            "[concat('Microsoft.Web/serverfarms/', parameters('appplanname'))]",
+            "microsoft.insights/components/appinsight-web"
+        ],
+        "properties": {
+            "name": "[parameters('webappname')]",
+            "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appplanname'))]",
+            "siteConfig": {
+                "linuxFxVersion": "[parameters('linuxFxversion')]",
+                "alwaysOn": false,
+                "appSettings": [
+                      {
+                            "name": "DOCKER_REGISTRY_SERVER_URL",
+                            "value": "[parameters('registryURL')]"
+                        },
+                        {
+                            "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+                            "value": "[parameters('registryUser')]"
+                        },
+                        {
+                            "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+                            "value": "[parameters('registryPW')]"
+                        },
+                        {
+                            "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+                            "value": "false"
+                        },
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference('microsoft.insights/components/appinsight-web', '2015-05-01').InstrumentationKey]"
+                        },
+                        {
+                            "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                            "value": "[reference('microsoft.insights/components/appinsight-web', '2015-05-01').ConnectionString]"
+                        },
+                        {
+                            "name": "ApplicationInsightsAgent_EXTENSION_VERSION",
+                            "value": "~2"
+                        },
+                        {
+                            "name": "XDT_MicrosoftApplicationInsights_Mode",
+                            "value": "default"
+            }
+                ]
+            }
+        }
+    },
+
+    {
+      "type": "Microsoft.Insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "appinsight-web",
+      "location": "[resourceGroup().location]",
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web",
+        "Request_Source": "rest"
+      }
+    }
+    ],
+    "outputs": {}
+}
