@@ -48,4 +48,22 @@ A Successful run of the build pipeline will look like this:
 
 The Release Pipeline:
 
+I am using a Classic Release pipeline for the CD part. The trigger for the release pipeline is the build pipeline. Whenever a new build is available the release pipeline will get triggered. 
+Link the variable groups with the release pipeline & set appropriate scope for each group.
+The release pipeline has two stages. One deploys the application in Test environment and when approval is given it deploys in the Prod environment.
+![image](https://user-images.githubusercontent.com/105546276/169165172-e362abc7-ec95-4178-8772-d97b3316a2b2.png)
+
+Now lets see the tasks in the Test stage:
+![image](https://user-images.githubusercontent.com/105546276/169165311-b0e61d69-607e-4fb5-aa1f-647cd3da00e1.png)
+
+Replace tokens in Parameters.json task replaces the parameters values with the values mentioned in the variable group.
+Create infra from ARM template task comfigures Azure App Service Plan, Azure Web App & Application Insights.
+Using a custom condition in both of these above mentioned task, we have the option to create infra during the release.
+![image](https://user-images.githubusercontent.com/105546276/169166162-fbf7e160-8f14-4de9-bfc2-b4c20d5725f1.png)
+
+Manual Verification job gives the user the time needed to verify if the application is working or not.
+Remove Infra job deletes the Azure Web App along with the App service plan & Application Insights. Here again with the help of a custom condition we can choose wheather to delete these resources or not.
+![image](https://user-images.githubusercontent.com/105546276/169166868-38a4ed5c-4b5f-44bd-9b46-3070bd9cfff3.png)
+
+![image](https://user-images.githubusercontent.com/105546276/169167102-af22cb27-90c9-43c1-b0ac-d439db39b7cb.png)
 
