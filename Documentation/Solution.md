@@ -43,13 +43,15 @@ The first stages copies the arm templates & parameters file from the infra folde
 
 The second stage builds the application using the Dockerfile and pushes the image to the container registry.
 
-A Successful run of the build pipeline will look like this:
+A successful run of the build pipeline will look like this:
 ![image](https://user-images.githubusercontent.com/105546276/169163708-fb389525-7951-4dbd-a643-d8541e42597a.png)
 
 The Release Pipeline:
 
 I am using a Classic Release pipeline for the CD part. The trigger for the release pipeline is the build pipeline. Whenever a new build is available the release pipeline will get triggered. 
 Link the variable groups with the release pipeline & set appropriate scope for each group.
+![image](https://user-images.githubusercontent.com/105546276/169170287-b2f750e1-c8a2-499e-9bf9-3e5323490d71.png)
+
 The release pipeline has two stages. One deploys the application in Test environment and when approval is given it deploys in the Prod environment.
 ![image](https://user-images.githubusercontent.com/105546276/169165172-e362abc7-ec95-4178-8772-d97b3316a2b2.png)
 
@@ -57,7 +59,7 @@ Now lets see the tasks in the Test stage:
 ![image](https://user-images.githubusercontent.com/105546276/169165311-b0e61d69-607e-4fb5-aa1f-647cd3da00e1.png)
 
 Replace tokens in Parameters.json task replaces the parameters values with the values mentioned in the variable group.
-Create infra from ARM template task comfigures Azure App Service Plan, Azure Web App & Application Insights.
+Create infra from ARM template task configures Azure App Service Plan, Azure Web App & Application Insights.
 Using a custom condition in both of these above mentioned task, we have the option to create infra during the release.
 ![image](https://user-images.githubusercontent.com/105546276/169166162-fbf7e160-8f14-4de9-bfc2-b4c20d5725f1.png)
 
@@ -71,4 +73,11 @@ In the Prod stage Pre-deployment approval is enabled. The Prod stage is same as 
 
 ![image](https://user-images.githubusercontent.com/105546276/169167686-8420c6fb-2673-4ab2-b354-fb1d0523d9b8.png)
 
+A successful run of the release pipeline will look like this:
+![image](https://user-images.githubusercontent.com/105546276/169172288-8b06a20b-7462-41ae-8965-7e9b4a827821.png)
+
+
+After the application is deployed on Azure Web App, you can use the URL of the service to access your application:
+![App login page](https://user-images.githubusercontent.com/105546276/169170669-7914a747-1a18-4eee-b021-0c69fc797bb7.png)
+![app](https://user-images.githubusercontent.com/105546276/169170786-5185a285-b928-4201-98a2-631df7e87a7c.png)
 
