@@ -38,4 +38,14 @@ Similarly the prod-vg variable group:
 
 The Build Pipeline:
 
+The azure-pipelines.yml file contains the build pipeline as code.It has two stages:
+The first stages copies the arm templates & parameters file from the infra folder and publishes it. We will be using these files as linked artifacts in the release pipeline to create the infrastructure.
+
+The second stage builds the application using the Dockerfile and pushes the image to the container registry.
+
+A Successful run of the build pipeline will look like this:
+![image](https://user-images.githubusercontent.com/105546276/169163708-fb389525-7951-4dbd-a643-d8541e42597a.png)
+
+The Release Pipeline:
+
 
