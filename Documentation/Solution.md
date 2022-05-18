@@ -67,3 +67,8 @@ Remove Infra job deletes the Azure Web App along with the App service plan & App
 
 ![image](https://user-images.githubusercontent.com/105546276/169167102-af22cb27-90c9-43c1-b0ac-d439db39b7cb.png)
 
+In the Prod stage Pre-deployment approval is enabled. The Prod stage is same as the Test stage. The only difference is we don't have the remove infra job to delete the resources.
+
+![image](https://user-images.githubusercontent.com/105546276/169167686-8420c6fb-2673-4ab2-b354-fb1d0523d9b8.png)
+
+
