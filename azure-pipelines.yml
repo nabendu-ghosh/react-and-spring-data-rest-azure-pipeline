@@ -1,7 +1,4 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+#Build pipeline
 
 trigger:
 - master
@@ -10,6 +7,8 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
+
+#Copy infra files for linked artifacts
 - stage: Copy_Infra_Files
   displayName: Copy Infra Files
   jobs:
@@ -25,7 +24,7 @@ stages:
             PathtoPublish: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'infra'
             publishLocation: 'Container'
-
+#Build docker image & push to acr
 - stage: Build_Application
   displayName: Build Application
   jobs:
